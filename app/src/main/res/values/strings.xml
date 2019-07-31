@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Black List</string>
+
+    <!-- MAIN ACTIVITY-->
+    <string name="msg_permissions_not_checked">permissions not checked</string>
+    <string name="msg_permission_not_granted">Permission NOT granted!</string>
+    <string name="msg_permission_not_granted_list">Permission NOT granted : %1$s!</string>
+    <string name="msg_permission_granted">Permission granted: %1$s !</string>
+    <string name="msg_unnecessary_check_permission">unnecessary check permission</string>
+
+    <!-- CALL BROADCAST-->
+    <string name="msg_call_broadcast">Execute on receive from broadcast</string>
+    <string name="msg_phone_state">Phone state %1$s .</string>
+    <string name="msg_fail_end_call">Fail to end the call!</string>
+    <string name="msg_sucess_end_call">Ending the call from: %1$s .</string>
+</resources>
