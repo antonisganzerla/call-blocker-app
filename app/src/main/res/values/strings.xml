@@ -8,6 +8,9 @@
     <string name="msg_permission_granted">Permission granted: %1$s !</string>
     <string name="msg_unnecessary_check_permission">unnecessary check permission</string>
 
+    <string name="open_drawer">Abrir</string>
+    <string name="close_drawer">Fechar</string>
+
     <!-- CALL BROADCAST-->
     <string name="msg_call_broadcast">Execute on receive from broadcast</string>
     <string name="msg_phone_state">Phone state %1$s .</string>

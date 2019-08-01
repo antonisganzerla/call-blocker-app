@@ -1,4 +1,4 @@
-package com.example.blacklist
+package com.sgztech.blacklist
 
 import org.junit.Test
 

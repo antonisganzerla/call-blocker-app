@@ -1,4 +1,4 @@
-package com.example.blacklist
+package com.sgztech.blacklist.util
 
 import android.content.pm.PackageManager
 import android.os.Build
@@ -11,5 +11,6 @@ class Constants {
         val CURRENT_VERSION_CODE = Build.VERSION.SDK_INT
         const val PERMISSION_GRANTED = PackageManager.PERMISSION_GRANTED
         const val PERMISSION_DENIED = PackageManager.PERMISSION_DENIED
+        const val URL_LOADER = 1
     }
 }
