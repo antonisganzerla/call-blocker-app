@@ -1,30 +1,29 @@
 package com.sgztech.blacklist.view
 
 import android.Manifest.permission.*
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.sgztech.blacklist.R
-import com.sgztech.blacklist.log.LooperApp
+import com.sgztech.blacklist.extension.openActivity
+import com.sgztech.blacklist.extension.showLog
+import com.sgztech.blacklist.extension.showToast
+import com.sgztech.blacklist.loader.LogCallLoader
 import com.sgztech.blacklist.util.Constants.Companion.CURRENT_VERSION_CODE
 import com.sgztech.blacklist.util.Constants.Companion.PERMISSION_DENIED
 import com.sgztech.blacklist.util.Constants.Companion.PERMISSION_GRANTED
 import com.sgztech.blacklist.util.Constants.Companion.VERSION_CODE_MARSHMALLOW
 import com.sgztech.blacklist.util.Constants.Companion.VERSION_CODE_PIE
+import com.sgztech.blacklist.util.GoogleSignInApp.getGoogleSignInClient
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header.view.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     private val account: GoogleSignInAccount? by lazy {
         GoogleSignIn.getLastSignedInAccount(this)
@@ -34,11 +33,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        setSupportActionBar(toolbar)
+        setupToolbar()
         setupDrawer()
-        if(havePermissions()){
-            setupLoader()
-        }
+        setupPermissions()
+    }
+
+    private fun setupToolbar() {
+        setSupportActionBar(toolbar)
     }
 
     private fun setupDrawer() {
@@ -46,31 +47,13 @@ class MainActivity : AppCompatActivity() {
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-        navView.setNavigationItemSelectedListener {
-            when (it.itemId) {
-                R.id.nav_item_one -> {
-                    Toast.makeText(this, "Menu 1", Toast.LENGTH_SHORT).show()
-                }
-                R.id.nav_item_two -> {
-                    Toast.makeText(this, "Menu 3", Toast.LENGTH_SHORT).show()
-                }
-                R.id.nav_item_seven -> {
-                    signOut()
-                    val intent = Intent(this, LoginActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                }
-            }
-            drawerLayout.closeDrawer(GravityCompat.START)
-            true
-        }
+        setupDrawerItemClickListener()
+        setupHeaderDrawer()
+    }
 
-        val headerView = navView.getHeaderView(0)
-        headerView?.let {
-            it.nav_header_name.text = account?.displayName
-            it.nav_header_email.text = account?.email
-            //Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(it.nav_header_imageView)
-            Picasso.get().load(account?.photoUrl).into(it.nav_header_imageView)
+    private fun setupPermissions() {
+        if (havePermissions()) {
+            setupLoader()
         }
     }
 
@@ -81,21 +64,53 @@ class MainActivity : AppCompatActivity() {
             super.onBackPressed()
         }
     }
+    private fun setupHeaderDrawer() {
+        val headerView = navView.getHeaderView(0)
+        headerView?.let {
+            it.nav_header_name.text = account?.displayName
+            it.nav_header_email.text = account?.email
+//            Picasso.get().setIndicatorsEnabled(true)
+//            Picasso.get().isLoggingEnabled = true
+            Picasso.get().load(account?.photoUrl).into(it.nav_header_imageView)
+        }
+    }
 
-    private fun havePermissions(): Boolean{
+    private fun setupDrawerItemClickListener() {
+        navView.setNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.nav_item_one -> {
+                    showToast("Menu 1")
+                }
+                R.id.nav_item_two -> {
+                    showToast("Menu 2")
+                }
+                R.id.nav_item_seven -> {
+                    signOut()
+                    openActivity(LoginActivity::class.java)
+                }
+            }
+            drawerLayout.closeDrawer(GravityCompat.START)
+            true
+        }
+    }
+
+
+    private fun havePermissions(): Boolean {
+        val listPermissions = arrayOf(READ_PHONE_STATE, CALL_PHONE, READ_CALL_LOG, WRITE_CALL_LOG)
         if (CURRENT_VERSION_CODE >= VERSION_CODE_PIE) {
+            listPermissions.plus(ANSWER_PHONE_CALLS)
             return checkPermission(
                 CURRENT_VERSION_CODE,
-                arrayOf(READ_PHONE_STATE, CALL_PHONE, READ_CALL_LOG, WRITE_CALL_LOG, ANSWER_PHONE_CALLS),
+                 listPermissions,
                 PERMISSION_REQUEST_PHONE_CALL
             )
         } else if (CURRENT_VERSION_CODE >= VERSION_CODE_MARSHMALLOW) {
             return checkPermission(
                 CURRENT_VERSION_CODE,
-                arrayOf(READ_PHONE_STATE, CALL_PHONE, READ_CALL_LOG, WRITE_CALL_LOG),
+                listPermissions,
                 PERMISSION_REQUEST_PHONE_CALL
             )
-        }else{
+        } else {
             return true
         }
     }
@@ -104,7 +119,7 @@ class MainActivity : AppCompatActivity() {
 
         var havePermission = false
         if (minVersionCode < VERSION_CODE_MARSHMALLOW || permissions.isEmpty()) {
-            Log.w(TAG_DEBUG, getString(R.string.msg_permissions_not_checked))
+            showLog(getString(R.string.msg_permissions_not_checked))
             return false
         }
 
@@ -112,14 +127,16 @@ class MainActivity : AppCompatActivity() {
             try {
                 if (checkSelfPermission(permissions[0]) == PERMISSION_DENIED) {
                     requestPermissions(permissions, requestCode)
-                }else{
+                } else {
                     havePermission = true
                 }
             } catch (e: Exception) {
-                Log.w(TAG_DEBUG, e)
+                e.message?.let {
+                    showLog(it)
+                }
             }
-        }else{
-            Log.w(TAG_DEBUG, getString(R.string.msg_unnecessary_check_permission))
+        } else {
+            showLog(getString(R.string.msg_unnecessary_check_permission))
         }
         return havePermission
     }
@@ -127,7 +144,7 @@ class MainActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         when (requestCode) {
             PERMISSION_REQUEST_PHONE_CALL -> {
-                if(checkResultPermission(grantResults, permissions)){
+                if (checkResultPermission(grantResults, permissions)) {
                     setupLoader()
                 }
                 return
@@ -136,39 +153,35 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupLoader() {
-        LooperApp(this)
+        LogCallLoader(this) {
+            //it.toList()
+        }
     }
 
     private fun checkResultPermission(grantResults: IntArray, permissions: Array<out String>): Boolean {
         if (grantResults.isNotEmpty() && grantResults[0] == PERMISSION_GRANTED) {
-            Log.w(TAG_DEBUG, getString(R.string.msg_permission_granted, permissions.asList()))
+            showLog(getString(R.string.msg_permission_granted, permissions.asList()))
             return true
         } else {
-            Toast.makeText(
-                this,
-                getString(R.string.msg_permission_not_granted),
-                Toast.LENGTH_SHORT
-            ).show()
-            Log.w(TAG_DEBUG, getString(R.string.msg_permission_not_granted_list, permissions.asList()))
+            showToast(getString(R.string.msg_permission_not_granted))
+            showLog(getString(R.string.msg_permission_not_granted_list, permissions.asList()))
             return false
         }
     }
 
     private fun signOut() {
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestEmail()
-            .build()
 
-        // Build a GoogleSignInClient with the options specified by gso.
-        val mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
-        mGoogleSignInClient.signOut()
+        getGoogleSignInClient(this)
+            .signOut()
             .addOnCompleteListener(this) {
-                Log.w(TAG_DEBUG, "Logout with success")
+                showLog(getString(R.string.msg_logout_success))
             }
     }
 
-    companion object {
+    override val TAG_DEBUG: String
+        get() = MainActivity.javaClass.name
+
+            companion object {
         const val PERMISSION_REQUEST_PHONE_CALL = 1
-        val TAG_DEBUG = MainActivity::javaClass.name
     }
 }

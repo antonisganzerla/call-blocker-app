@@ -1,4 +1,4 @@
-package com.sgztech.blacklist.log
+package com.sgztech.blacklist.loader
 
 import java.util.*
 

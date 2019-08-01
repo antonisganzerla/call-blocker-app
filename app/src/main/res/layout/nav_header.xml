@@ -4,7 +4,7 @@
         android:id="@+id/nav_header"
         android:layout_width="match_parent"
         android:layout_height="160dp"
-        android:background="@color/colorAccent"
+        android:background="@color/colorOrange"
         android:clickable="true"
         android:focusable="true"
         android:gravity="bottom"
@@ -16,6 +16,7 @@
             android:id="@+id/nav_header_imageView"
             android:layout_width="64dp"
             android:layout_height="64dp"
+            android:paddingTop="5dp"
             android:src="@mipmap/ic_launcher"/>
 
     <TextView

@@ -79,6 +79,6 @@ class CallReceiver : BroadcastReceiver() {
     }
 
     companion object {
-        val TAG_DEBUG = CallReceiver::javaClass.name
+        val TAG_DEBUG = CallReceiver.javaClass.name
     }
 }
