@@ -50,7 +50,7 @@ class LogCallLoader(
             }
         }
         Log.i(TAG_DEBUG, logCallList.toList().toString())
-        callback(logCallList)
+        callback(logCallList.asReversed())
         onDestroy()
     }
 
