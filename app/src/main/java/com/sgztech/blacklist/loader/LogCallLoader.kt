@@ -4,7 +4,7 @@ import android.database.Cursor
 import android.os.Bundle
 import android.provider.CallLog
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.loader.app.LoaderManager
 import androidx.loader.content.CursorLoader
 import androidx.loader.content.Loader
@@ -15,12 +15,17 @@ import java.util.*
 
 
 class LogCallLoader(
-    private val activity: AppCompatActivity,
+    private val activity: FragmentActivity,
     private val callback: (list: MutableList<CallLogApp>) -> Unit
 ) : LoaderManager.LoaderCallbacks<Cursor> {
 
     init {
         LoaderManager.getInstance(activity).initLoader(ID_LOG_CALL_LOADER, null, this)
+    }
+
+    private fun onDestroy(){
+        LoaderManager.getInstance(activity).destroyLoader(ID_LOG_CALL_LOADER)
+        Log.d(TAG_DEBUG, "onDestroy")
     }
 
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
@@ -46,6 +51,7 @@ class LogCallLoader(
         }
         Log.i(TAG_DEBUG, logCallList.toList().toString())
         callback(logCallList)
+        onDestroy()
     }
 
     override fun onLoaderReset(loader: Loader<Cursor>) {

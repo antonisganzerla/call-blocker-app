@@ -10,7 +10,6 @@ import com.sgztech.blacklist.R
 import com.sgztech.blacklist.extension.openActivity
 import com.sgztech.blacklist.extension.showLog
 import com.sgztech.blacklist.extension.showToast
-import com.sgztech.blacklist.loader.LogCallLoader
 import com.sgztech.blacklist.util.Constants.Companion.CURRENT_VERSION_CODE
 import com.sgztech.blacklist.util.Constants.Companion.PERMISSION_DENIED
 import com.sgztech.blacklist.util.Constants.Companion.PERMISSION_GRANTED
@@ -22,12 +21,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header.view.*
 import kotlinx.android.synthetic.main.toolbar.*
 
-
 class MainActivity : BaseActivity() {
 
     private val account: GoogleSignInAccount? by lazy {
         GoogleSignIn.getLastSignedInAccount(this)
     }
+    private var fragmentPosition = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +52,7 @@ class MainActivity : BaseActivity() {
 
     private fun setupPermissions() {
         if (havePermissions()) {
-            setupLoader()
+            openCallLogFragment()
         }
     }
 
@@ -64,6 +63,7 @@ class MainActivity : BaseActivity() {
             super.onBackPressed()
         }
     }
+
     private fun setupHeaderDrawer() {
         val headerView = navView.getHeaderView(0)
         headerView?.let {
@@ -76,10 +76,10 @@ class MainActivity : BaseActivity() {
     }
 
     private fun setupDrawerItemClickListener() {
-        navView.setNavigationItemSelectedListener {
-            when (it.itemId) {
+        navView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
                 R.id.nav_item_one -> {
-                    showToast("Menu 1")
+                    openCallLogFragment()
                 }
                 R.id.nav_item_two -> {
                     showToast("Menu 2")
@@ -94,6 +94,10 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    private fun openCallLogFragment(){
+        displayView(INIT_POSITION_FRAGMENT, "Logs")
+    }
+
 
     private fun havePermissions(): Boolean {
         val listPermissions = arrayOf(READ_PHONE_STATE, CALL_PHONE, READ_CALL_LOG, WRITE_CALL_LOG)
@@ -101,7 +105,7 @@ class MainActivity : BaseActivity() {
             listPermissions.plus(ANSWER_PHONE_CALLS)
             return checkPermission(
                 CURRENT_VERSION_CODE,
-                 listPermissions,
+                listPermissions,
                 PERMISSION_REQUEST_PHONE_CALL
             )
         } else if (CURRENT_VERSION_CODE >= VERSION_CODE_MARSHMALLOW) {
@@ -145,16 +149,25 @@ class MainActivity : BaseActivity() {
         when (requestCode) {
             PERMISSION_REQUEST_PHONE_CALL -> {
                 if (checkResultPermission(grantResults, permissions)) {
-                    setupLoader()
+                    openCallLogFragment()
                 }
                 return
             }
         }
     }
 
-    private fun setupLoader() {
-        LogCallLoader(this) {
-            //it.toList()
+    private fun displayView(position: Int, title: String) {
+
+        if(position != fragmentPosition){
+            val fragment = when (position) {
+                0 -> CallLogFragment()
+                else -> {
+                    CallLogFragment()
+                }
+            }
+            supportFragmentManager.beginTransaction().replace(R.id.content_frame, fragment, null).commit()
+            toolbar.title = title
+            fragmentPosition = position
         }
     }
 
@@ -181,7 +194,8 @@ class MainActivity : BaseActivity() {
     override val TAG_DEBUG: String
         get() = MainActivity.javaClass.name
 
-            companion object {
+    companion object {
         const val PERMISSION_REQUEST_PHONE_CALL = 1
+        const val INIT_POSITION_FRAGMENT = 0
     }
 }
