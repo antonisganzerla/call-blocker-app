@@ -20,13 +20,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-            <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
                 <TextView
-                        android:id="@+id/tvNumberPhone"
+                        android:id="@+id/tvNumber"
                         style="@style/TextAppearance.AppCompat.Medium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -39,39 +34,8 @@
                         style="@style/TextAppearance.AppCompat.Small"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="end"
                         android:padding="8dp"
-                        android:layout_marginEnd="8dp"
                         android:text="31 jul, 19:53"/>
-
-            </LinearLayout>
-
-            <RelativeLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-
-                <TextView
-                        android:id="@+id/tvDirection"
-                        style="@style/TextAppearance.AppCompat.Small"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:padding="8dp"
-                        android:text="Receiver"/>
-
-                <ImageButton
-                        android:id="@+id/btnAddBlackList"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="40dp"
-                        android:layout_marginBottom="10dp"
-                        android:background="@android:drawable/ic_lock_lock"/>
-
-            </RelativeLayout>
-
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

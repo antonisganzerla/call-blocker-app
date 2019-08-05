@@ -2,6 +2,7 @@ package com.sgztech.blacklist.view
 
 import android.Manifest.permission.*
 import android.os.Bundle
+import android.os.PersistableBundle
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -32,9 +33,18 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        savedInstanceState?.let {
+            fragmentPosition = it.getInt(SAVED_INSTANCE_CURRENT_FRAGMENT_KEY)
+        }
+
         setupToolbar()
         setupDrawer()
         setupPermissions()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
+        outState?.putInt(SAVED_INSTANCE_CURRENT_FRAGMENT_KEY, fragmentPosition)
+        super.onSaveInstanceState(outState, outPersistentState)
     }
 
     private fun setupToolbar() {
@@ -82,7 +92,7 @@ class MainActivity : BaseActivity() {
                     openCallLogFragment()
                 }
                 R.id.nav_item_two -> {
-                    showToast("Menu 2")
+                    displayView(1, "Black List")
                 }
                 R.id.nav_item_seven -> {
                     signOut()
@@ -161,11 +171,12 @@ class MainActivity : BaseActivity() {
         if(position != fragmentPosition){
             val fragment = when (position) {
                 0 -> CallLogFragment()
+                1 -> BlackListFragment()
                 else -> {
                     CallLogFragment()
                 }
             }
-            supportFragmentManager.beginTransaction().replace(R.id.content_frame, fragment, null).commit()
+            supportFragmentManager.beginTransaction().replace(R.id.content_frame, fragment, null).commitAllowingStateLoss()
             toolbar.title = title
             fragmentPosition = position
         }
@@ -197,5 +208,6 @@ class MainActivity : BaseActivity() {
     companion object {
         const val PERMISSION_REQUEST_PHONE_CALL = 1
         const val INIT_POSITION_FRAGMENT = 0
+        const val SAVED_INSTANCE_CURRENT_FRAGMENT_KEY = "SAVED_INSTANCE_CURRENT_FRAGMENT_KEY"
     }
 }

@@ -10,6 +10,8 @@ import androidx.loader.content.CursorLoader
 import androidx.loader.content.Loader
 import com.sgztech.blacklist.R
 import com.sgztech.blacklist.exception.CursorLoaderNotFoundException
+import com.sgztech.blacklist.model.CallLogApp
+import com.sgztech.blacklist.model.Contact
 import com.sgztech.blacklist.util.Constants.Companion.ID_LOG_CALL_LOADER
 import java.util.*
 
@@ -73,7 +75,7 @@ class LogCallLoader(
         val direction = callTypeToString(callType)
 
         return CallLogApp(
-            phNumber,
+            Contact(name = phNumber, numberPhone = phNumber),
             callType,
             callDate,
             callDuration,
@@ -87,10 +89,14 @@ class LogCallLoader(
 
     private fun callTypeToString(callType: String): String {
         return when (callType.toInt()) {
-            CallLog.Calls.OUTGOING_TYPE -> "Outgoing"
-            CallLog.Calls.INCOMING_TYPE -> "Incoming"
-            CallLog.Calls.MISSED_TYPE -> "Missed"
-            CallLog.Calls.VOICEMAIL_TYPE -> "Voice Mail"
+//            CallLog.Calls.OUTGOING_TYPE -> "Outgoing"
+//            CallLog.Calls.INCOMING_TYPE -> "Incoming"
+//            CallLog.Calls.MISSED_TYPE -> "Missed"
+//            CallLog.Calls.VOICEMAIL_TYPE -> "Voice Mail"
+            CallLog.Calls.OUTGOING_TYPE -> "Realizada"
+            CallLog.Calls.INCOMING_TYPE -> "Recebida"
+            CallLog.Calls.MISSED_TYPE -> "Perdida"
+            CallLog.Calls.VOICEMAIL_TYPE -> "Correio de voz"
             else -> ""
         }
     }

@@ -1,9 +1,9 @@
-package com.sgztech.blacklist.loader
+package com.sgztech.blacklist.model
 
 import java.util.*
 
 data class CallLogApp(
-    val number: String?,
+    val contact: Contact,
     val type: String?,
     val date: String?,
     val duration: String?,
