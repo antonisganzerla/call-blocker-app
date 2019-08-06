@@ -3,7 +3,6 @@ package com.sgztech.blacklist.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.sgztech.blacklist.R
@@ -11,6 +10,8 @@ import com.sgztech.blacklist.core.CoreApplication
 import com.sgztech.blacklist.extension.toPtBrDateString
 import com.sgztech.blacklist.extension.toTelephoneFormated
 import com.sgztech.blacklist.model.CallLogApp
+import com.sgztech.blacklist.util.AlertDialogUtil
+import com.sgztech.blacklist.util.ToastUtil
 import kotlinx.android.synthetic.main.call_log_card_view.view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -59,17 +60,14 @@ class CallLogAdapter(
         }
 
         private fun createAlertDialog(callLog: CallLogApp): AlertDialog {
-            return AlertDialog.Builder(itemView.context)
-                .setTitle("Atenção")
-                .setMessage("Deseja adicionar o número a lista de bloqueio?")
-                .setPositiveButton("Sim") { _, _ ->
-                    saveContact(callLog)
-                    Toast.makeText(itemView.context, "Adicionado com sucesso", Toast.LENGTH_SHORT).show()
-                }
-                .setNegativeButton("Cancelar") { _, _ ->
-                    // unnecessary implementatiton
-                }
-                .create()
+            val context = itemView.context
+            return AlertDialogUtil.create(
+                context,
+                R.string.dialog_message_add_black_list
+            ) {
+                saveContact(callLog)
+                ToastUtil.show(context, R.string.message_add_item_black_list)
+            }
         }
 
         private fun saveContact(callLog: CallLogApp){

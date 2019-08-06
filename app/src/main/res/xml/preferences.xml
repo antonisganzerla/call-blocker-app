@@ -1,0 +1,24 @@
+<androidx.preference.PreferenceScreen
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <SwitchPreferenceCompat
+            app:key="block_all"
+            app:title="Bloquear chamadas"
+            app:summary="Bloquear todas as chamadas recebidas"/>
+
+    <SwitchPreferenceCompat
+            app:key="allow_all"
+            app:title="Permitir chamadas"
+            app:summary="Permtitir todas as chamadas recebidas"/>
+
+    <SwitchPreferenceCompat
+            app:key="block_only_black_list"
+            app:title="Bloquear apenas da lista"
+            app:summary="Bloquear chamadas recebidas da lista de bloqueio"/>
+
+    <SwitchPreferenceCompat
+            app:key="notifications"
+            app:title="Notificações"
+            app:summary="Receber notificações após bloqueio de chamada recebida"/>
+
+</androidx.preference.PreferenceScreen>

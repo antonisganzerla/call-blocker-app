@@ -11,6 +11,7 @@ import com.sgztech.blacklist.R
 import com.sgztech.blacklist.extension.openActivity
 import com.sgztech.blacklist.extension.showLog
 import com.sgztech.blacklist.extension.showToast
+import com.sgztech.blacklist.util.AlertDialogUtil
 import com.sgztech.blacklist.util.Constants.Companion.CURRENT_VERSION_CODE
 import com.sgztech.blacklist.util.Constants.Companion.PERMISSION_DENIED
 import com.sgztech.blacklist.util.Constants.Companion.PERMISSION_GRANTED
@@ -88,15 +89,18 @@ class MainActivity : BaseActivity() {
     private fun setupDrawerItemClickListener() {
         navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.nav_item_one -> {
+                R.id.nav_item_call -> {
                     openCallLogFragment()
                 }
-                R.id.nav_item_two -> {
-                    displayView(1, "Black List")
+                R.id.nav_item_block -> {
+                    displayView(1, "Lista de bloqueio")
                 }
-                R.id.nav_item_seven -> {
-                    signOut()
-                    openActivity(LoginActivity::class.java)
+                R.id.nav_item_tools -> {
+                    displayView(2, "Configurações")
+                }
+
+                R.id.nav_item_logout -> {
+                    showDialogLogout()
                 }
             }
             drawerLayout.closeDrawer(GravityCompat.START)
@@ -104,8 +108,8 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun openCallLogFragment(){
-        displayView(INIT_POSITION_FRAGMENT, "Logs")
+    private fun openCallLogFragment() {
+        displayView(INIT_POSITION_FRAGMENT, "Chamadas")
     }
 
 
@@ -168,15 +172,17 @@ class MainActivity : BaseActivity() {
 
     private fun displayView(position: Int, title: String) {
 
-        if(position != fragmentPosition){
+        if (position != fragmentPosition) {
             val fragment = when (position) {
                 0 -> CallLogFragment()
                 1 -> BlackListFragment()
+                2 -> PreferencesFragment()
                 else -> {
                     CallLogFragment()
                 }
             }
-            supportFragmentManager.beginTransaction().replace(R.id.content_frame, fragment, null).commitAllowingStateLoss()
+            supportFragmentManager.beginTransaction().replace(R.id.content_frame, fragment, null)
+                .commitAllowingStateLoss()
             toolbar.title = title
             fragmentPosition = position
         }
@@ -187,10 +193,21 @@ class MainActivity : BaseActivity() {
             showLog(getString(R.string.msg_permission_granted, permissions.asList()))
             return true
         } else {
-            showToast(getString(R.string.msg_permission_not_granted))
+            showToast(R.string.msg_permission_not_granted)
             showLog(getString(R.string.msg_permission_not_granted_list, permissions.asList()))
             return false
         }
+    }
+
+    private fun showDialogLogout() {
+        val dialog = AlertDialogUtil.create(
+            this,
+            R.string.dialog_message_logout
+        ) {
+            signOut()
+            openActivity(LoginActivity::class.java)
+        }
+        dialog.show()
     }
 
     private fun signOut() {
