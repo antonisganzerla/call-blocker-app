@@ -27,6 +27,7 @@ object AlertDialogUtil {
     /**
      * builder with only positive callback
      */
+    @JvmStatic
     fun create(
         context: Context,
         resourceMessage: Int,
@@ -51,5 +52,13 @@ object AlertDialogUtil {
             .setPositiveButton(context.getString(R.string.dialog_positive_button)) { _, _ ->
                 positiveCallBack()
             }
+    }
+
+    @JvmStatic
+    fun showSimpleDialog(context: Context, resourceTitle: Int, resourceMessage: Int){
+        AlertDialog.Builder(context)
+            .setTitle(context.getString(resourceTitle))
+            .setMessage(context.getString(resourceMessage))
+            .show()
     }
 }

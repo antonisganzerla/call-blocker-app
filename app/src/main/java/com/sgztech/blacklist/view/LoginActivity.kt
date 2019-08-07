@@ -9,7 +9,7 @@ import com.google.android.gms.tasks.Task
 import com.sgztech.blacklist.R
 import com.sgztech.blacklist.extension.openActivity
 import com.sgztech.blacklist.extension.showLog
-import com.sgztech.blacklist.util.GoogleSignInApp.getGoogleSignInClient
+import com.sgztech.blacklist.util.GoogleSignInUtil.googleSignInClient
 import kotlinx.android.synthetic.main.activity_login.*
 
 
@@ -33,7 +33,7 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun signIn() {
-        val signInIntent = getGoogleSignInClient(this).signInIntent
+        val signInIntent = googleSignInClient(this).signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 

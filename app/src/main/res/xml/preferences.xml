@@ -7,11 +7,6 @@
             app:summary="Bloquear todas as chamadas recebidas"/>
 
     <SwitchPreferenceCompat
-            app:key="allow_all"
-            app:title="Permitir chamadas"
-            app:summary="Permtitir todas as chamadas recebidas"/>
-
-    <SwitchPreferenceCompat
             app:key="block_only_black_list"
             app:title="Bloquear apenas da lista"
             app:summary="Bloquear chamadas recebidas da lista de bloqueio"/>

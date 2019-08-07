@@ -1,17 +1,11 @@
 <resources>
     <string name="app_name">Black List</string>
 
-
     <!-- Login ACTIVITY-->
     <string name="msg_signin_success">signInResult:success -> %1$s.</string>
     <string name="msg_signin_fail">signInResult:failed code= %1$s.</string>
 
     <!-- MAIN ACTIVITY-->
-    <string name="msg_permissions_not_checked">permissions not checked</string>
-    <string name="msg_permission_not_granted">Permission NOT granted!</string>
-    <string name="msg_permission_not_granted_list">Permission NOT granted : %1$s!</string>
-    <string name="msg_permission_granted">Permission granted: %1$s !</string>
-    <string name="msg_unnecessary_check_permission">unnecessary check permission</string>
     <string name="msg_logout_success">Logout with success</string>
 
     <string name="open_drawer">Abrir</string>
@@ -20,11 +14,20 @@
     <!-- AlertDialogUtil -->
     <string name="dialog_title">Atenção</string>
     <string name="dialog_message_logout">Deseja realmente efetuar o logout?</string>
-    <string name="dialog_message_delete_black_list">Deseja excluir o número da lista de bloqueio?</string>
-    <string name="dialog_message_add_black_list">Deseja adicionar o número a lista de bloqueio?</string>
     <string name="dialog_positive_button">Sim</string>
     <string name="dialog_negative_button">Cancelar</string>
+    <string name="dialog_message_delete_black_list">Deseja excluir o número da lista de bloqueio?</string>
+    <string name="dialog_message_add_black_list">Deseja adicionar o número a lista de bloqueio?</string>
+    <string name="dialog_message_request_permission">O aplicativo precisa de acesso as chamadas telefônicas para o funcionamento. Permitir o acesso?</string>
+    <string name="dialog_about_app_title">Sobre o app</string>
+    <string name="dialog_about_app_message">Aplicativo para bloqueio de chamadas indesejadas.\n\n Desenvolvido por Antoni Sganzerla.</string>
 
+    <!-- PermissionUtil -->
+    <string name="msg_permissions_not_checked">permissions not checked</string>
+    <string name="msg_permission_not_granted">Permission NOT granted!</string>
+    <string name="msg_permission_not_granted_list">Permission NOT granted : %1$s!</string>
+    <string name="msg_permission_granted">Permission granted: %1$s !</string>
+    <string name="msg_unnecessary_check_permission">unnecessary check permission</string>
 
 
     <!-- CALL BROADCAST-->
@@ -51,5 +54,14 @@
 
     <!-- CallLogAdapter -->
     <string name="message_add_item_black_list">Adicionado com sucesso</string>
+
+    <!-- CallLogFragment -->
+    <string name="title_call_log_fragment">Chamadas</string>
+
+    <!-- BlackListFragment -->
+    <string name="title_black_list_fragment">Lista de bloqueio</string>
+
+    <!-- PreferencesFragment -->
+    <string name="title_preferences_fragment">Configurações</string>
 
 </resources>

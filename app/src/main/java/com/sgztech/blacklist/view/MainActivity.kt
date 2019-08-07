@@ -1,6 +1,5 @@
 package com.sgztech.blacklist.view
 
-import android.Manifest.permission.*
 import android.os.Bundle
 import android.os.PersistableBundle
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -12,12 +11,9 @@ import com.sgztech.blacklist.extension.openActivity
 import com.sgztech.blacklist.extension.showLog
 import com.sgztech.blacklist.extension.showToast
 import com.sgztech.blacklist.util.AlertDialogUtil
-import com.sgztech.blacklist.util.Constants.Companion.CURRENT_VERSION_CODE
-import com.sgztech.blacklist.util.Constants.Companion.PERMISSION_DENIED
 import com.sgztech.blacklist.util.Constants.Companion.PERMISSION_GRANTED
-import com.sgztech.blacklist.util.Constants.Companion.VERSION_CODE_MARSHMALLOW
-import com.sgztech.blacklist.util.Constants.Companion.VERSION_CODE_PIE
-import com.sgztech.blacklist.util.GoogleSignInApp.getGoogleSignInClient
+import com.sgztech.blacklist.util.GoogleSignInUtil.googleSignLogout
+import com.sgztech.blacklist.util.PermissionUtil.havePermissions
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header.view.*
@@ -35,16 +31,16 @@ class MainActivity : BaseActivity() {
         setContentView(R.layout.activity_main)
 
         savedInstanceState?.let {
-            fragmentPosition = it.getInt(SAVED_INSTANCE_CURRENT_FRAGMENT_KEY)
+            fragmentPosition = it.getInt(CURRENT_FRAGMENT_KEY)
         }
 
         setupToolbar()
         setupDrawer()
-        setupPermissions()
+        openCallLogFragment()
     }
 
     override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
-        outState?.putInt(SAVED_INSTANCE_CURRENT_FRAGMENT_KEY, fragmentPosition)
+        outState?.putInt(CURRENT_FRAGMENT_KEY, fragmentPosition)
         super.onSaveInstanceState(outState, outPersistentState)
     }
 
@@ -59,12 +55,6 @@ class MainActivity : BaseActivity() {
 
         setupDrawerItemClickListener()
         setupHeaderDrawer()
-    }
-
-    private fun setupPermissions() {
-        if (havePermissions()) {
-            openCallLogFragment()
-        }
     }
 
     override fun onBackPressed() {
@@ -93,14 +83,20 @@ class MainActivity : BaseActivity() {
                     openCallLogFragment()
                 }
                 R.id.nav_item_block -> {
-                    displayView(1, "Lista de bloqueio")
+                    displayView(1, getString(R.string.title_black_list_fragment))
                 }
                 R.id.nav_item_tools -> {
-                    displayView(2, "Configurações")
+                    displayView(2, getString(R.string.title_preferences_fragment))
                 }
-
                 R.id.nav_item_logout -> {
                     showDialogLogout()
+                }
+                R.id.nav_item_about -> {
+                    AlertDialogUtil.showSimpleDialog(
+                        this,
+                        R.string.dialog_about_app_title,
+                        R.string.dialog_about_app_message
+                    )
                 }
             }
             drawerLayout.closeDrawer(GravityCompat.START)
@@ -109,54 +105,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun openCallLogFragment() {
-        displayView(INIT_POSITION_FRAGMENT, "Chamadas")
-    }
-
-
-    private fun havePermissions(): Boolean {
-        val listPermissions = arrayOf(READ_PHONE_STATE, CALL_PHONE, READ_CALL_LOG, WRITE_CALL_LOG)
-        if (CURRENT_VERSION_CODE >= VERSION_CODE_PIE) {
-            listPermissions.plus(ANSWER_PHONE_CALLS)
-            return checkPermission(
-                CURRENT_VERSION_CODE,
-                listPermissions,
-                PERMISSION_REQUEST_PHONE_CALL
-            )
-        } else if (CURRENT_VERSION_CODE >= VERSION_CODE_MARSHMALLOW) {
-            return checkPermission(
-                CURRENT_VERSION_CODE,
-                listPermissions,
-                PERMISSION_REQUEST_PHONE_CALL
-            )
-        } else {
-            return true
-        }
-    }
-
-    private fun checkPermission(minVersionCode: Int, permissions: Array<String>, requestCode: Int): Boolean {
-
-        var havePermission = false
-        if (minVersionCode < VERSION_CODE_MARSHMALLOW || permissions.isEmpty()) {
-            showLog(getString(R.string.msg_permissions_not_checked))
-            return false
-        }
-
-        if (CURRENT_VERSION_CODE >= minVersionCode) {
-            try {
-                if (checkSelfPermission(permissions[0]) == PERMISSION_DENIED) {
-                    requestPermissions(permissions, requestCode)
-                } else {
-                    havePermission = true
-                }
-            } catch (e: Exception) {
-                e.message?.let {
-                    showLog(it)
-                }
-            }
-        } else {
-            showLog(getString(R.string.msg_unnecessary_check_permission))
-        }
-        return havePermission
+        displayView(INIT_POSITION_FRAGMENT, getString(R.string.title_call_log_fragment))
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -164,6 +113,8 @@ class MainActivity : BaseActivity() {
             PERMISSION_REQUEST_PHONE_CALL -> {
                 if (checkResultPermission(grantResults, permissions)) {
                     openCallLogFragment()
+                } else {
+                    showDialogRefusedPermissions()
                 }
                 return
             }
@@ -171,20 +122,23 @@ class MainActivity : BaseActivity() {
     }
 
     private fun displayView(position: Int, title: String) {
-
-        if (position != fragmentPosition) {
-            val fragment = when (position) {
-                0 -> CallLogFragment()
-                1 -> BlackListFragment()
-                2 -> PreferencesFragment()
-                else -> {
-                    CallLogFragment()
+        if (havePermissions(this)) {
+            if (position != fragmentPosition) {
+                val fragment = when (position) {
+                    0 -> CallLogFragment()
+                    1 -> BlackListFragment()
+                    2 -> PreferencesFragment()
+                    else -> {
+                        CallLogFragment()
+                    }
                 }
+                supportFragmentManager.beginTransaction().replace(R.id.content_frame, fragment, null)
+                    .commitAllowingStateLoss()
+                toolbar.title = title
+                fragmentPosition = position
             }
-            supportFragmentManager.beginTransaction().replace(R.id.content_frame, fragment, null)
-                .commitAllowingStateLoss()
-            toolbar.title = title
-            fragmentPosition = position
+        } else {
+            showDialogRefusedPermissions()
         }
     }
 
@@ -204,19 +158,35 @@ class MainActivity : BaseActivity() {
             this,
             R.string.dialog_message_logout
         ) {
-            signOut()
-            openActivity(LoginActivity::class.java)
+            logout()
         }
         dialog.show()
     }
 
-    private fun signOut() {
+    private fun logout() {
+        signOut()
+        openActivity(LoginActivity::class.java)
+    }
 
-        getGoogleSignInClient(this)
-            .signOut()
-            .addOnCompleteListener(this) {
-                showLog(getString(R.string.msg_logout_success))
+    private fun showDialogRefusedPermissions() {
+        val dialog = AlertDialogUtil.create(
+            this,
+            R.string.dialog_message_request_permission,
+            {
+                havePermissions(this)
+            },
+            {
+                logout()
             }
+        )
+        dialog.setCancelable(false)
+        dialog.show()
+    }
+
+    private fun signOut() {
+        googleSignLogout(this) {
+            showLog(getString(R.string.msg_logout_success))
+        }
     }
 
     override val TAG_DEBUG: String
@@ -225,6 +195,6 @@ class MainActivity : BaseActivity() {
     companion object {
         const val PERMISSION_REQUEST_PHONE_CALL = 1
         const val INIT_POSITION_FRAGMENT = 0
-        const val SAVED_INSTANCE_CURRENT_FRAGMENT_KEY = "SAVED_INSTANCE_CURRENT_FRAGMENT_KEY"
+        const val CURRENT_FRAGMENT_KEY = "CURRENT_FRAGMENT_KEY"
     }
 }
