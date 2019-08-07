@@ -63,5 +63,11 @@
 
     <!-- PreferencesFragment -->
     <string name="title_preferences_fragment">Configurações</string>
+    <string name="key_block_list">block_only_block_list</string>
+    <bool name="block_list_setting_default">true</bool>
+    <string name="key_block_all">block_all</string>
+    <bool name="block_all_setting_default">false</bool>
+    <string name="key_notification">notifications</string>
+
 
 </resources>

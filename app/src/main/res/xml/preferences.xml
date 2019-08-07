@@ -3,18 +3,18 @@
         xmlns:android="http://schemas.android.com/apk/res/android">
 
     <SwitchPreferenceCompat
-            app:key="block_all"
+            app:key="@string/key_block_all"
             app:title="Bloquear chamadas"
             app:summary="Bloquear todas as chamadas recebidas"/>
 
     <SwitchPreferenceCompat
-            app:key="block_only_block_list"
+            app:key="@string/key_block_list"
             app:title="Bloquear apenas da lista"
             android:defaultValue="true"
             app:summary="Bloquear chamadas recebidas da lista de bloqueio"/>
 
     <SwitchPreferenceCompat
-            app:key="notifications"
+            app:key="@string/key_notification"
             app:title="Notificações"
             app:summary="Receber notificações após bloqueio de chamada recebida"/>
 

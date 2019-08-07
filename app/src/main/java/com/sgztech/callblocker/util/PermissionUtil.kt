@@ -12,18 +12,18 @@ object PermissionUtil {
     fun havePermissions(activity: BaseActivity): Boolean{
         val listPermissions = necessaryPermissions()
         if (Constants.CURRENT_VERSION_CODE >= Constants.VERSION_CODE_PIE) {
-            listPermissions.plus(Manifest.permission.ANSWER_PHONE_CALLS)
+            val list = necessaryPermissions().plus(Manifest.permission.ANSWER_PHONE_CALLS)
             return checkPermission(
                 activity,
                 Constants.CURRENT_VERSION_CODE,
-                listPermissions,
+                list,
                 MainActivity.PERMISSION_REQUEST_PHONE_CALL
             )
         } else if (Constants.CURRENT_VERSION_CODE >= Constants.VERSION_CODE_MARSHMALLOW) {
             return checkPermission(
                 activity,
                 Constants.CURRENT_VERSION_CODE,
-                listPermissions,
+                necessaryPermissions(),
                 MainActivity.PERMISSION_REQUEST_PHONE_CALL
             )
         } else {
@@ -44,7 +44,6 @@ object PermissionUtil {
 
         var havePermission = false
         if (minVersionCode < Constants.VERSION_CODE_MARSHMALLOW || permissions.isEmpty()) {
-            //showLog(getString(R.string.msg_permissions_not_checked))
             return false
         }
 
