@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Black List</string>
+    <string name="app_name">Call Blocker</string>
 
     <!-- Login ACTIVITY-->
     <string name="msg_signin_success">signInResult:success -> %1$s.</string>
@@ -16,8 +16,8 @@
     <string name="dialog_message_logout">Deseja realmente efetuar o logout?</string>
     <string name="dialog_positive_button">Sim</string>
     <string name="dialog_negative_button">Cancelar</string>
-    <string name="dialog_message_delete_black_list">Deseja excluir o número da lista de bloqueio?</string>
-    <string name="dialog_message_add_black_list">Deseja adicionar o número a lista de bloqueio?</string>
+    <string name="dialog_message_delete_block_list">Deseja excluir o número da lista de bloqueio?</string>
+    <string name="dialog_message_add_block_list">Deseja adicionar o número a lista de bloqueio?</string>
     <string name="dialog_message_request_permission">O aplicativo precisa de acesso as chamadas telefônicas para o funcionamento. Permitir o acesso?</string>
     <string name="dialog_about_app_title">Sobre o app</string>
     <string name="dialog_about_app_message">Aplicativo para bloqueio de chamadas indesejadas.\n\n Desenvolvido por Antoni Sganzerla.</string>
@@ -49,17 +49,17 @@
     <string name="menu_item_about">Sobre o app</string>
     <string name="menu_item_logout">Sair</string>
 
-    <!-- BlackListAdapter -->
-    <string name="message_delete_item_black_list">Deletado com sucesso</string>
+    <!-- BlockListAdapter -->
+    <string name="message_delete_item_block_list">Deletado com sucesso</string>
 
     <!-- CallLogAdapter -->
-    <string name="message_add_item_black_list">Adicionado com sucesso</string>
+    <string name="message_add_item_block_list">Adicionado com sucesso</string>
 
     <!-- CallLogFragment -->
     <string name="title_call_log_fragment">Chamadas</string>
 
-    <!-- BlackListFragment -->
-    <string name="title_black_list_fragment">Lista de bloqueio</string>
+    <!-- BlockListFragment -->
+    <string name="title_block_list_fragment">Lista de bloqueio</string>
 
     <!-- PreferencesFragment -->
     <string name="title_preferences_fragment">Configurações</string>

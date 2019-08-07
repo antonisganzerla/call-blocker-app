@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          package="com.sgztech.blacklist">
+          package="com.sgztech.callblocker">
 
     <uses-permission android:name="android.permission.ANSWER_PHONE_CALLS"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
@@ -17,23 +17,23 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
-            android:name=".core.CoreApplication"
+            android:name="com.sgztech.callblocker.core.CoreApplication"
             tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name="com.sgztech.blacklist.view.LoginActivity">
+        <activity android:name="com.sgztech.callblocker.view.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
-        <receiver android:name="com.sgztech.blacklist.broadcast.CallReceiver">
+        <receiver android:name="com.sgztech.callblocker.broadcast.CallReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE"/>
             </intent-filter>
         </receiver>
 
-        <activity android:name="com.sgztech.blacklist.view.MainActivity">
+        <activity android:name="com.sgztech.callblocker.view.MainActivity">
         </activity>
     </application>
 

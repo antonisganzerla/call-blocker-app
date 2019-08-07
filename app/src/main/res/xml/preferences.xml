@@ -1,5 +1,6 @@
 <androidx.preference.PreferenceScreen
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android">
 
     <SwitchPreferenceCompat
             app:key="block_all"
@@ -7,8 +8,9 @@
             app:summary="Bloquear todas as chamadas recebidas"/>
 
     <SwitchPreferenceCompat
-            app:key="block_only_black_list"
+            app:key="block_only_block_list"
             app:title="Bloquear apenas da lista"
+            android:defaultValue="true"
             app:summary="Bloquear chamadas recebidas da lista de bloqueio"/>
 
     <SwitchPreferenceCompat
