@@ -25,6 +25,15 @@ object PreferenceUtil{
         )
     }
 
+    @JvmStatic
+    fun notify(context: Context): Boolean{
+        return  booleanPreference(
+            context,
+            R.string.key_notification,
+            R.bool.notification_setting_default
+        )
+    }
+
     private fun booleanPreference(context: Context, resourceKey: Int, resourceDefaultValue: Int): Boolean{
         return sharedPreferences(context).getBoolean(
             context.resources.getString(resourceKey),
