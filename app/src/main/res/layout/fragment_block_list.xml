@@ -13,4 +13,13 @@
             android:layout_height="match_parent"
             tools:listitem="@layout/block_list_card_view"/>
 
+    <TextView
+            android:id="@+id/tv_empty_block_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:visibility="gone"
+            style="@style/TextAppearance.AppCompat.Large"
+            android:text="@string/block_list_empty" />
+
 </FrameLayout>

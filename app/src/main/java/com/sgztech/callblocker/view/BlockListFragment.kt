@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.sgztech.callblocker.R
 import com.sgztech.callblocker.adapter.BlockListAdapter
 import com.sgztech.callblocker.core.CoreApplication
+import com.sgztech.callblocker.extension.gone
+import com.sgztech.callblocker.extension.visible
 import com.sgztech.callblocker.model.Contact
 import kotlinx.android.synthetic.main.fragment_block_list.*
 import kotlinx.coroutines.Dispatchers
@@ -38,6 +40,17 @@ class BlockListFragment : Fragment() {
             it.adapter = BlockListAdapter(list)
             it.layoutManager =  LinearLayoutManager(activity)
             it.setHasFixedSize(true)
+        }
+        setupListVisibility(list)
+    }
+
+    private fun setupListVisibility(list: MutableList<Contact>) {
+        if (list.isEmpty()) {
+            recycler_view_block_list.gone()
+            tv_empty_block_list.visible()
+        } else {
+            recycler_view_block_list.visible()
+            tv_empty_block_list.gone()
         }
     }
 

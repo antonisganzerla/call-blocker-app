@@ -9,8 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sgztech.callblocker.R
 import com.sgztech.callblocker.adapter.CallLogAdapter
-import com.sgztech.callblocker.model.CallLogApp
+import com.sgztech.callblocker.extension.gone
+import com.sgztech.callblocker.extension.visible
 import com.sgztech.callblocker.loader.LogCallLoader
+import com.sgztech.callblocker.model.CallLogApp
 import kotlinx.android.synthetic.main.fragment_call_log.*
 
 
@@ -32,9 +34,20 @@ class CallLogFragment : Fragment() {
 
 
     private fun setupRecyclerView(list: MutableList<CallLogApp>) {
-        recycler_view.adapter = CallLogAdapter(list)
-        recycler_view.layoutManager = LinearLayoutManager(activity)
-        recycler_view.setHasFixedSize(true)
+        recycler_view_call_log.adapter = CallLogAdapter(list)
+        recycler_view_call_log.layoutManager = LinearLayoutManager(activity)
+        recycler_view_call_log.setHasFixedSize(true)
+        setupListVisibility(list)
+    }
+
+    private fun setupListVisibility(list: MutableList<CallLogApp>) {
+        if (list.isEmpty()) {
+            recycler_view_call_log.gone()
+            tv_empty_call_log_list.visible()
+        } else {
+            recycler_view_call_log.visible()
+            tv_empty_call_log_list.gone()
+        }
     }
 
     private fun setupLoader() {

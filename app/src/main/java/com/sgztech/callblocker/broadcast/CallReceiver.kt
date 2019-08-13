@@ -80,7 +80,7 @@ class CallReceiver : BroadcastReceiver() {
             val dao = CoreApplication.database?.contactDao()
             dao?.load(phoneNumber)
         }
-        return result.await() != null
+        return result.await()!! > 0
     }
 
     private fun showLogAfterCall(result: Boolean, phoneNumber: String?, context: Context) {

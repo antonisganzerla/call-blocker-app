@@ -28,20 +28,20 @@ class BlockListAdapter (
     }
 
     override fun onBindViewHolder(holder: BlockListViewHolder, position: Int) {
-        holder.bind(list[position])
+        holder.bind(list[position], position)
     }
 
 
     inner class BlockListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(contact: Contact){
+        fun bind(contact: Contact, position: Int){
             itemView.tvNumber.text = contact.numberPhone.toTelephoneFormated()
             itemView.tvDate.text = contact.blockedDate
             itemView.btnAddBlockList.setOnClickListener {
-                createAlertDialog(contact).show()
+                createAlertDialog(contact, position).show()
             }
         }
 
-        private fun createAlertDialog(contact: Contact): AlertDialog {
+        private fun createAlertDialog(contact: Contact, position: Int): AlertDialog {
             val context = itemView.context
             return AlertDialogUtil.create(
                 context,
@@ -49,7 +49,7 @@ class BlockListAdapter (
             ) {
                 deleteContact(contact)
                 list.remove(contact)
-                notifyDataSetChanged()
+                notifyItemRemoved(position)
                 ToastUtil.show(context, R.string.message_delete_item_block_list)
             }
         }

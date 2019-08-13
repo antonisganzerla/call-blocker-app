@@ -57,15 +57,17 @@
 
     <!-- CallLogFragment -->
     <string name="title_call_log_fragment">Chamadas</string>
+    <string name="call_log_list_empty">Não há registros de ligações recentes.</string>
 
     <!-- BlockListFragment -->
     <string name="title_block_list_fragment">Lista de bloqueio</string>
+    <string name="block_list_empty">Não há números na lista de bloqueio</string>
 
     <!-- PreferencesFragment -->
     <string name="title_preferences_fragment">Configurações</string>
 
     <string name="title_block_all">Bloquear chamadas</string>
-    <string name="summary_block_all">Bloquear todas as chamadas recebidas</string>
+    <string name="summary_block_all">Bloquear todas as chamadas recebidas.</string>
     <string name="key_block_all">block_all</string>
     <bool name="block_all_setting_default">false</bool>
 
