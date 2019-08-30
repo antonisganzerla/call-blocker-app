@@ -3,9 +3,11 @@ package com.sgztech.callblocker.broadcast
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.telecom.TelecomManager
 import android.telephony.TelephonyManager
 import android.util.Log
+import androidx.annotation.RequiresApi
 import com.android.internal.telephony.ITelephony
 import com.sgztech.callblocker.R
 import com.sgztech.callblocker.core.CoreApplication
@@ -44,10 +46,11 @@ class CallReceiver : BroadcastReceiver() {
             showLogAfterCall(result, phoneNumber, context)
             sendNotification(context, phoneNumber)
         } catch (e: Exception) {
-            e.printStackTrace()
+            Log.w(TAG_DEBUG, e.message)
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     private fun endCallAbovePieVersion(context: Context, phoneNumber: String) {
         val tm = context.getSystemService(Context.TELECOM_SERVICE) as TelecomManager
         val result = tm.endCall()
