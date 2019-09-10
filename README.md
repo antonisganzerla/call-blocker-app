@@ -6,4 +6,7 @@
 * Coroutines
 * Notifications
 * Picasso
+* SharedPreferences
+* Google Sign-In
+* Broadcast Receiver
 * Material Design Components
