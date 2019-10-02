@@ -6,29 +6,22 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.sgztech.callblocker.R
-import com.sgztech.callblocker.core.CoreApplication
 import com.sgztech.callblocker.extension.toPtBrDateString
 import com.sgztech.callblocker.extension.toTelephoneFormated
-import com.sgztech.callblocker.model.CallLogApp
 import com.sgztech.callblocker.util.AlertDialogUtil
-import com.sgztech.callblocker.util.ToastUtil
+import com.wickerlabs.logmanager.LogObject
+import com.wickerlabs.logmanager.LogsManager
 import kotlinx.android.synthetic.main.call_log_card_view.view.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.util.*
 
 
 class CallLogAdapter(
-    private val list: MutableList<CallLogApp>
+    private val list: List<LogObject>,
+    private val saveCallback : (callLog: LogObject) -> Unit
 ) : RecyclerView.Adapter<CallLogAdapter.CallLogViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CallLogViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.call_log_card_view, parent, false)
-        if(viewType == VIEW_TYPE_EMPTY){
-            //load msg vazia
-        }else{
-            //load list
-        }
         return CallLogViewHolder(view)
     }
 
@@ -40,49 +33,34 @@ class CallLogAdapter(
         holder.bind(list[position])
     }
 
-    override fun getItemViewType(position: Int): Int {
-        if(list.isEmpty()){
-            return VIEW_TYPE_EMPTY
-        }else{
-            return VIEW_TYPE_NORMAL
-        }
-    }
-
     inner class CallLogViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(callLog: CallLogApp){
-            itemView.tvNumberPhone.text = callLog.contact.numberPhone.toTelephoneFormated()
-            itemView.tvDirection.text = callLog.direction
-            itemView.tvDate.text = callLog.callDayTime?.toPtBrDateString()
+        fun bind(callLog: LogObject) {
+            itemView.tvNumberPhone.text = callLog.contactName.toTelephoneFormated()
+            itemView.tvDate.text = Date(callLog.date).toPtBrDateString()
+            itemView.tvDuration.text = callLog.coolDuration
+
+            with(itemView.ivDirection) {
+                when (callLog.type) {
+                    LogsManager.INCOMING -> this.setImageResource(R.drawable.received)
+                    LogsManager.OUTGOING -> this.setImageResource(R.drawable.sent)
+                    LogsManager.MISSED -> this.setImageResource(R.drawable.missed)
+                    else -> this.setImageResource(R.drawable.cancelled)
+                }
+            }
             itemView.btnAddBlockList.setOnClickListener {
                 createAlertDialog(callLog).show()
 
             }
         }
 
-        private fun createAlertDialog(callLog: CallLogApp): AlertDialog {
+        private fun createAlertDialog(callLog: LogObject): AlertDialog {
             val context = itemView.context
             return AlertDialogUtil.create(
                 context,
                 R.string.dialog_message_add_block_list
             ) {
-                saveContact(callLog)
-                ToastUtil.show(context, R.string.message_add_item_block_list)
-            }
-        }
-
-        private fun saveContact(callLog: CallLogApp){
-            GlobalScope.launch {
-                val dao = CoreApplication.database?.contactDao()
-                callLog.contact.blockedDate = Date().toPtBrDateString()
-                callLog.contact.blocked = true
-                dao?.add(callLog.contact)
+                saveCallback(callLog)
             }
         }
     }
-
-    companion object{
-        const val VIEW_TYPE_EMPTY = 0
-        const val VIEW_TYPE_NORMAL = 1
-    }
-
 }

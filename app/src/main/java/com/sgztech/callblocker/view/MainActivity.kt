@@ -2,6 +2,7 @@ package com.sgztech.callblocker.view
 
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.util.Log
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -13,9 +14,11 @@ import com.sgztech.callblocker.util.GoogleSignInUtil.signOut
 import com.sgztech.callblocker.util.PermissionUtil.checkResultPermission
 import com.sgztech.callblocker.util.PermissionUtil.havePermissions
 import com.squareup.picasso.Picasso
+import com.wickerlabs.logmanager.LogsManager
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header.view.*
 import kotlinx.android.synthetic.main.toolbar.*
+
 
 class MainActivity : BaseActivity() {
 
@@ -167,6 +170,19 @@ class MainActivity : BaseActivity() {
         dialog.setCancelable(false)
         dialog.show()
     }
+
+//    private fun getContacts() {
+//        val buildList = ContactsGetterBuilder(applicationContext)
+//            .allFields()
+//            .buildList()
+//
+//        buildList.forEach {
+//            Log.w("SAIDA", it.compositeName)
+//            it.phoneList.forEach { phoneNumber ->
+//                Log.w("SAIDA", phoneNumber.mainData)
+//            }
+//        }
+//    }
 
     override val TAG_DEBUG: String
         get() = MainActivity.javaClass.name

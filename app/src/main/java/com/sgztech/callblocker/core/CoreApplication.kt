@@ -1,19 +1,21 @@
 package com.sgztech.callblocker.core
 
 import android.app.Application
-import androidx.room.Room
-import com.sgztech.callblocker.database.AppDatabase
+import com.sgztech.callblocker.di.dbModule
+import com.sgztech.callblocker.di.repositoryModule
+import com.sgztech.callblocker.di.uiModule
 import com.sgztech.callblocker.util.NotificationUtil
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 
 open class CoreApplication: Application() {
 
-    companion object {
-        var database: AppDatabase? = null
-    }
-
     override fun onCreate() {
         super.onCreate()
-        database = Room.databaseBuilder(this, AppDatabase::class.java, "my-db").build()
+        startKoin {
+            androidContext(this@CoreApplication)
+            modules(listOf(dbModule, repositoryModule, uiModule))
+        }
         NotificationUtil.createNotificationChannel(this)
     }
 }

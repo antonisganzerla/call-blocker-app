@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_margin="4dp">
 
     <androidx.cardview.widget.CardView
@@ -15,64 +15,61 @@
             android:padding="5dp"
             card_view:cardCornerRadius="5dp">
 
-        <LinearLayout
-                android:orientation="vertical"
+        <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:padding="5dp">
 
-            <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+            <TextView
+                    android:id="@+id/tvNumberPhone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/ivDirection"
+                    android:singleLine="true"
+                    tools:text="Phone number"
+                    android:textColor="#000"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-                <TextView
-                        android:id="@+id/tvNumberPhone"
-                        style="@style/TextAppearance.AppCompat.Medium"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:padding="8dp"
-                        android:hint="+55 51 99555-3660"/>
+            <ImageView
+                    android:id="@+id/ivDirection"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginEnd="15dp"
+                    android:scaleType="fitCenter"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/missed" />
 
-                <TextView
-                        android:id="@+id/tvDate"
-                        style="@style/TextAppearance.AppCompat.Small"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="end"
-                        android:padding="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:text="31 jul, 19:53"/>
+            <TextView
+                    android:id="@+id/tvDuration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvNumberPhone"
+                    android:layout_toEndOf="@+id/ivDirection"
+                    tools:text="Duration"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            </LinearLayout>
+            <TextView
+                    android:id="@+id/tvDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvDuration"
+                    android:layout_toEndOf="@+id/ivDirection"
+                    tools:text="Date"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textSize="16sp" />
 
-            <RelativeLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-
-                <TextView
-                        android:id="@+id/tvDirection"
-                        style="@style/TextAppearance.AppCompat.Small"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:padding="8dp"
-                        android:text="Receiver"/>
-
-                <ImageButton
-                        android:id="@+id/btnAddBlockList"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="40dp"
-                        android:layout_marginBottom="10dp"
-                        android:background="@android:drawable/ic_lock_lock"/>
-
-            </RelativeLayout>
-
-        </LinearLayout>
+            <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnAddBlockList"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="10dp"
+                    style="?attr/borderlessButtonStyle"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_block_helper_black_24dp"
+                    android:layout_centerVertical="true" />
+        </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
 

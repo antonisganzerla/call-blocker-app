@@ -1,5 +1,6 @@
 package com.sgztech.callblocker.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.sgztech.callblocker.model.Contact
 
@@ -7,10 +8,10 @@ import com.sgztech.callblocker.model.Contact
 interface ContactDao {
 
     @Query("SELECT * FROM CONTACT")
-    fun all(): List<Contact>
+    fun all(): LiveData<List<Contact>>
 
     @Query("SELECT ID FROM CONTACT WHERE NUMBER_PHONE LIKE :numberPhone")
-    fun load(numberPhone: String): Long
+    fun load(numberPhone: String): LiveData<Long>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun add(vararg contact: Contact)

@@ -10,7 +10,6 @@ object PermissionUtil {
 
     @JvmStatic
     fun havePermissions(activity: BaseActivity): Boolean{
-        val listPermissions = necessaryPermissions()
         if (Constants.CURRENT_VERSION_CODE >= Constants.VERSION_CODE_PIE) {
             val list = necessaryPermissions().plus(Manifest.permission.ANSWER_PHONE_CALLS)
             return checkPermission(
@@ -36,7 +35,8 @@ object PermissionUtil {
             Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.CALL_PHONE,
             Manifest.permission.READ_CALL_LOG,
-            Manifest.permission.WRITE_CALL_LOG
+            Manifest.permission.WRITE_CALL_LOG,
+            Manifest.permission.READ_CONTACTS
         )
     }
 

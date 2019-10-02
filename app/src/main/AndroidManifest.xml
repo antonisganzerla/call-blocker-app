@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.READ_CALL_LOG" />
     <uses-permission android:name="android.permission.WRITE_CALL_LOG" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
             android:allowBackup="true"
@@ -17,24 +18,23 @@
             android:roundIcon="@mipmap/ic_app_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
-            android:name="com.sgztech.callblocker.core.CoreApplication"
+            android:name=".core.CoreApplication"
             tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name="com.sgztech.callblocker.view.LoginActivity">
+        <activity android:name=".view.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
-        <receiver android:name="com.sgztech.callblocker.broadcast.CallReceiver">
+        <receiver android:name=".broadcast.CallReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE"/>
             </intent-filter>
         </receiver>
 
-        <activity android:name="com.sgztech.callblocker.view.MainActivity">
-        </activity>
+        <activity android:name=".view.MainActivity"/>
     </application>
 
 </manifest>

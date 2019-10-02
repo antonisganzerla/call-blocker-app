@@ -11,27 +11,27 @@ class PreferencesFragment :
     PreferenceFragmentCompat(){
 
     private val preferenceBlockList by lazy {
-        findPreference(getString(R.string.key_block_list)) as SwitchPreferenceCompat
+        findPreference<SwitchPreferenceCompat>(getString(R.string.key_block_list))
     }
     private val preferenceAllList by lazy {
-        findPreference(getString(R.string.key_block_all)) as SwitchPreferenceCompat
+        findPreference<SwitchPreferenceCompat>(getString(R.string.key_block_all))
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
 
-        preferenceAllList.setOnPreferenceChangeListener { _, newValue ->
+        preferenceAllList?.setOnPreferenceChangeListener { _, newValue ->
             val value = newValue as Boolean
             if(value){
-                preferenceBlockList.isChecked = false
+                preferenceBlockList?.isChecked = false
             }
             true
         }
 
-        preferenceBlockList.setOnPreferenceChangeListener { _, newValue ->
+        preferenceBlockList?.setOnPreferenceChangeListener { _, newValue ->
             val value = newValue as Boolean
             if(value){
-                preferenceAllList.isChecked = false
+                preferenceAllList?.isChecked = false
             }
             true
         }

@@ -10,16 +10,16 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import com.android.internal.telephony.ITelephony
 import com.sgztech.callblocker.R
-import com.sgztech.callblocker.core.CoreApplication
+import com.sgztech.callblocker.repository.ContactRepository
 import com.sgztech.callblocker.util.Constants
 import com.sgztech.callblocker.util.NotificationUtil.sendNotification
 import com.sgztech.callblocker.util.PreferenceUtil
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
-class CallReceiver : BroadcastReceiver() {
+class CallReceiver : BroadcastReceiver(), KoinComponent {
+
+    private val repository: ContactRepository by inject()
 
     override fun onReceive(context: Context, intent: Intent) {
         Log.w(TAG_DEBUG, context.getString(R.string.msg_call_broadcast))
@@ -59,14 +59,12 @@ class CallReceiver : BroadcastReceiver() {
     }
 
     private fun checkRulesToBlockCall(context: Context, phoneNumber: String) {
-        GlobalScope.launch(context = Dispatchers.Main) {
-            if (PreferenceUtil.blockAllCall(context)) {
+        if (PreferenceUtil.blockAllCall(context)) {
                 endCall(context, phoneNumber)
-            }
+        }
 
-            if (PreferenceUtil.blockOnlyList(context) && numberPhoneIsBlockList(phoneNumber)) {
-                endCall(context, phoneNumber)
-            }
+        if (PreferenceUtil.blockOnlyList(context)) {
+            numberPhoneIsBlockList(phoneNumber, context)
         }
     }
 
@@ -78,12 +76,12 @@ class CallReceiver : BroadcastReceiver() {
         }
     }
 
-    private suspend fun numberPhoneIsBlockList(phoneNumber: String): Boolean {
-        val result = GlobalScope.async {
-            val dao = CoreApplication.database?.contactDao()
-            dao?.load(phoneNumber)
+    private fun numberPhoneIsBlockList(phoneNumber: String, context: Context) {
+        val contactId = repository.load(phoneNumber)
+        val value = contactId.value
+        if(value != null && value > 0L){
+            endCall(context, phoneNumber)
         }
-        return result.await()!! > 0
     }
 
     private fun showLogAfterCall(result: Boolean, phoneNumber: String?, context: Context) {

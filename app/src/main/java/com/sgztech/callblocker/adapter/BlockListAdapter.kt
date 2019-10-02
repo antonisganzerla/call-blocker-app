@@ -6,21 +6,24 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.sgztech.callblocker.R
-import com.sgztech.callblocker.core.CoreApplication
 import com.sgztech.callblocker.extension.toTelephoneFormated
 import com.sgztech.callblocker.model.Contact
 import com.sgztech.callblocker.util.AlertDialogUtil
-import com.sgztech.callblocker.util.ToastUtil
 import kotlinx.android.synthetic.main.block_list_card_view.view.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class BlockListAdapter (
-    private val list: MutableList<Contact>
+    private val deleteCallback : (contact: Contact) -> Unit
     ) : RecyclerView.Adapter<BlockListAdapter.BlockListViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BlockListViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.block_list_card_view, parent, false)
         return BlockListViewHolder(view)
+    }
+
+    private var list: List<Contact> = ArrayList()
+
+    fun setContacts(contacts: List<Contact>) {
+        this.list = contacts
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {
@@ -31,10 +34,9 @@ class BlockListAdapter (
         holder.bind(list[position], position)
     }
 
-
     inner class BlockListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(contact: Contact, position: Int){
-            itemView.tvNumber.text = contact.numberPhone.toTelephoneFormated()
+            itemView.tvNumberPhone.text = contact.numberPhone.toTelephoneFormated()
             itemView.tvDate.text = contact.blockedDate
             itemView.btnAddBlockList.setOnClickListener {
                 createAlertDialog(contact, position).show()
@@ -47,17 +49,8 @@ class BlockListAdapter (
                 context,
                 R.string.dialog_message_delete_block_list
             ) {
-                deleteContact(contact)
-                list.remove(contact)
+                deleteCallback(contact)
                 notifyItemRemoved(position)
-                ToastUtil.show(context, R.string.message_delete_item_block_list)
-            }
-        }
-
-        private fun deleteContact(contact: Contact){
-            GlobalScope.launch {
-                val dao = CoreApplication.database?.contactDao()
-                dao?.delete(contact)
             }
         }
     }
