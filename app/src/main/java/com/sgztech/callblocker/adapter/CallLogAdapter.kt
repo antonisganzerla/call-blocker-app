@@ -47,9 +47,9 @@ class CallLogAdapter(
                     else -> this.setImageResource(R.drawable.cancelled)
                 }
             }
+
             itemView.btnAddBlockList.setOnClickListener {
                 createAlertDialog(callLog).show()
-
             }
         }
 

@@ -14,6 +14,8 @@ import com.sgztech.callblocker.repository.ContactRepository
 import com.sgztech.callblocker.util.Constants
 import com.sgztech.callblocker.util.NotificationUtil.sendNotification
 import com.sgztech.callblocker.util.PreferenceUtil
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
@@ -59,13 +61,20 @@ class CallReceiver : BroadcastReceiver(), KoinComponent {
     }
 
     private fun checkRulesToBlockCall(context: Context, phoneNumber: String) {
+
+        Log.w(TAG_DEBUG, "init checkRulesToBlockCall")
+
         if (PreferenceUtil.blockAllCall(context)) {
-                endCall(context, phoneNumber)
+            endCall(context, phoneNumber)
+            return
         }
 
-        if (PreferenceUtil.blockOnlyList(context)) {
-            numberPhoneIsBlockList(phoneNumber, context)
+        GlobalScope.launch {
+            if (PreferenceUtil.blockOnlyList(context) && numberPhoneIsBlockList(phoneNumber)) {
+                endCall(context, phoneNumber)
+            }
         }
+        Log.w(TAG_DEBUG, "end checkRulesToBlockCall")
     }
 
     private fun endCall(context: Context, phoneNumber: String) {
@@ -76,12 +85,10 @@ class CallReceiver : BroadcastReceiver(), KoinComponent {
         }
     }
 
-    private fun numberPhoneIsBlockList(phoneNumber: String, context: Context) {
-        val contactId = repository.load(phoneNumber)
-        val value = contactId.value
-        if(value != null && value > 0L){
-            endCall(context, phoneNumber)
-        }
+    private  suspend fun numberPhoneIsBlockList(phoneNumber: String): Boolean{
+        val id = repository.load(phoneNumber)
+        Log.w(TAG_DEBUG, "numberPhoneIsBlockList $id")
+        return id > 0L
     }
 
     private fun showLogAfterCall(result: Boolean, phoneNumber: String?, context: Context) {

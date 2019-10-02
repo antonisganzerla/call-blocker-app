@@ -5,6 +5,7 @@ import com.sgztech.callblocker.dao.ContactDao
 import com.sgztech.callblocker.extension.toTelephoneFormated
 import com.sgztech.callblocker.model.Contact
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class ContactRepository(private val dao: ContactDao) {
@@ -21,8 +22,11 @@ class ContactRepository(private val dao: ContactDao) {
         }
     }
 
-    fun load(numberPhone: String): LiveData<Long> {
-        return dao.load(numberPhone.toTelephoneFormated())
+    suspend fun load(numberPhone: String): Long {
+        val id = GlobalScope.async {
+            dao.load(numberPhone.toTelephoneFormated())
+        }
+        return id.await()
     }
 
     fun getAll(): LiveData<List<Contact>> {

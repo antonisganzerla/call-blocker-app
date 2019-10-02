@@ -11,6 +11,7 @@ import com.sgztech.callblocker.R
 import com.sgztech.callblocker.adapter.CallLogAdapter
 import com.sgztech.callblocker.extension.gone
 import com.sgztech.callblocker.extension.toPtBrDateString
+import com.sgztech.callblocker.extension.toTelephoneFormated
 import com.sgztech.callblocker.extension.visible
 import com.sgztech.callblocker.model.Contact
 import com.sgztech.callblocker.util.ToastUtil.show
@@ -45,7 +46,7 @@ class CallLogFragment : Fragment() {
             viewModel.insert(
                 Contact(
                     name = callLog.contactName,
-                    numberPhone = callLog.number,
+                    numberPhone = callLog.number.toTelephoneFormated(),
                     blocked = true,
                     blockedDate = Date().toPtBrDateString()
                 )
