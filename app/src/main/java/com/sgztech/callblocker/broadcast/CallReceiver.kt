@@ -10,6 +10,7 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import com.android.internal.telephony.ITelephony
 import com.sgztech.callblocker.R
+import com.sgztech.callblocker.model.Contact
 import com.sgztech.callblocker.repository.ContactRepository
 import com.sgztech.callblocker.util.Constants
 import com.sgztech.callblocker.util.NotificationUtil.sendNotification
@@ -22,6 +23,7 @@ import org.koin.core.inject
 class CallReceiver : BroadcastReceiver(), KoinComponent {
 
     private val repository: ContactRepository by inject()
+    private lateinit var contact: Contact
 
     override fun onReceive(context: Context, intent: Intent) {
         Log.w(TAG_DEBUG, context.getString(R.string.msg_call_broadcast))
@@ -61,20 +63,15 @@ class CallReceiver : BroadcastReceiver(), KoinComponent {
     }
 
     private fun checkRulesToBlockCall(context: Context, phoneNumber: String) {
-
-        Log.w(TAG_DEBUG, "init checkRulesToBlockCall")
-
         if (PreferenceUtil.blockAllCall(context)) {
             endCall(context, phoneNumber)
             return
         }
-
         GlobalScope.launch {
             if (PreferenceUtil.blockOnlyList(context) && numberPhoneIsBlockList(phoneNumber)) {
-                endCall(context, phoneNumber)
+                endCall(context, contact.name)
             }
         }
-        Log.w(TAG_DEBUG, "end checkRulesToBlockCall")
     }
 
     private fun endCall(context: Context, phoneNumber: String) {
@@ -86,9 +83,8 @@ class CallReceiver : BroadcastReceiver(), KoinComponent {
     }
 
     private  suspend fun numberPhoneIsBlockList(phoneNumber: String): Boolean{
-        val id = repository.load(phoneNumber)
-        Log.w(TAG_DEBUG, "numberPhoneIsBlockList $id")
-        return id > 0L
+        contact = repository.loadByNumberPhone(phoneNumber)
+        return this::contact.isInitialized && contact.id != null
     }
 
     private fun showLogAfterCall(result: Boolean, phoneNumber: String?, context: Context) {

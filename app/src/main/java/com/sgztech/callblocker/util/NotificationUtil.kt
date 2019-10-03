@@ -8,8 +8,10 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.sgztech.callblocker.R
+import com.sgztech.callblocker.extension.toPtBrDateString
 import com.sgztech.callblocker.extension.toTelephoneFormated
 import com.sgztech.callblocker.util.PreferenceUtil.notify
+import java.util.*
 
 object NotificationUtil {
 
@@ -35,10 +37,11 @@ object NotificationUtil {
     @JvmStatic
     fun sendNotification(context: Context, phoneNumber: String) {
         if(notify(context)){
+            val date = Date().toPtBrDateString()
             val builder = NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.phone_cancel)
                 .setContentTitle(context.getString(R.string.notification_title))
-                .setContentText(context.getString(R.string.notification_message, phoneNumber.toTelephoneFormated()))
+                .setContentText(context.getString(R.string.notification_message, phoneNumber.toTelephoneFormated(), date))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             NotificationManagerCompat.from(context).notify(1, builder.build())
         }else{

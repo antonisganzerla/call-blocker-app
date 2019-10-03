@@ -10,8 +10,8 @@ interface ContactDao {
     @Query("SELECT * FROM CONTACT")
     fun all(): LiveData<List<Contact>>
 
-    @Query("SELECT ID FROM CONTACT WHERE NUMBER_PHONE LIKE :numberPhone")
-    fun load(numberPhone: String): Long
+    @Query("SELECT * FROM CONTACT WHERE NUMBER_PHONE LIKE :numberPhone")
+    fun loadByNumberPhone(numberPhone: String): Contact
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun add(vararg contact: Contact)

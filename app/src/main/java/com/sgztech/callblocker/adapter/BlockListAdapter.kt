@@ -36,7 +36,7 @@ class BlockListAdapter (
 
     inner class BlockListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(contact: Contact, position: Int){
-            itemView.tvNumberPhone.text = contact.numberPhone.toTelephoneFormated()
+            itemView.tvNumberPhone.text = contact.name.toTelephoneFormated()
             itemView.tvDate.text = contact.blockedDate
             itemView.btnAddBlockList.setOnClickListener {
                 createAlertDialog(contact, position).show()

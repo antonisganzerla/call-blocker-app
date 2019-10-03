@@ -61,10 +61,10 @@ class CallLogFragment : Fragment() {
     private fun setupListVisibility(list: List<LogObject>) {
         if (list.isEmpty()) {
             recycler_view_call_log.gone()
-            tv_empty_call_log_list.visible()
+            panel_empty_list.visible()
         } else {
             recycler_view_call_log.visible()
-            tv_empty_call_log_list.gone()
+            panel_empty_list.gone()
         }
     }
 }

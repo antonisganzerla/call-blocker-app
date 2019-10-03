@@ -22,11 +22,11 @@ class ContactRepository(private val dao: ContactDao) {
         }
     }
 
-    suspend fun load(numberPhone: String): Long {
-        val id = GlobalScope.async {
-            dao.load(numberPhone.toTelephoneFormated())
+    suspend fun loadByNumberPhone(numberPhone: String): Contact {
+        val contact = GlobalScope.async {
+            dao.loadByNumberPhone(numberPhone.toTelephoneFormated())
         }
-        return id.await()
+        return contact.await()
     }
 
     fun getAll(): LiveData<List<Contact>> {

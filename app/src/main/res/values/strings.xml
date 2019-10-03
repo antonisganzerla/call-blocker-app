@@ -86,10 +86,8 @@
     <string name="channel_description">Block unwanted calls</string>
     <string name="not_sent_notification_log">Notification not sent because of user preferences</string>
     <string name="notification_title">Chamada Bloqueada</string>
-    <string name="notification_message">Telefone: %1$s</string>
+    <string name="notification_message">%1$s - %2$s</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tv_block_date">Bloqueado em:</string>
 
 
