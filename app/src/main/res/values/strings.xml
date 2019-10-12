@@ -18,6 +18,7 @@
     <string name="dialog_negative_button">Cancelar</string>
     <string name="dialog_message_delete_block_list">Deseja excluir o número da lista de bloqueio?</string>
     <string name="dialog_message_add_block_list">Deseja adicionar o número a lista de bloqueio?</string>
+    <string name="dialog_message_add_contact_block_list">Deseja adicionar o contato a lista de bloqueio?</string>
     <string name="dialog_message_request_permission">O aplicativo precisa de acesso as chamadas telefônicas para o funcionamento. Permitir o acesso?</string>
     <string name="dialog_about_app_title">Sobre o app</string>
     <string name="dialog_about_app_message">Aplicativo para bloqueio de chamadas indesejadas.\n\n Desenvolvido por Antoni Sganzerla.</string>
@@ -43,6 +44,7 @@
 
     <!-- Menu item drawer -->
     <string name="menu_item_call">Chamadas</string>
+    <string name="menu_item_contact">Contatos</string>
     <string name="menu_item_blockeds">Bloqueados</string>
     <string name="menu_item_title">Ajuda</string>
     <string name="menu_item_tools">Configurações</string>
@@ -62,6 +64,11 @@
     <!-- BlockListFragment -->
     <string name="title_block_list_fragment">Lista de bloqueio</string>
     <string name="block_list_empty">Não há números na lista de bloqueio</string>
+
+    <!-- ContactFragment -->
+    <string name="title_contact_list_fragment">Contatos</string>
+    <string name="contact_list_empty">Não há contatos na sua agenda</string>
+    <string name="contact_without_number">Sem número associado</string>
 
     <!-- PreferencesFragment -->
     <string name="title_preferences_fragment">Configurações</string>
@@ -89,6 +96,9 @@
     <string name="notification_message">%1$s - %2$s</string>
 
     <string name="tv_block_date">Bloqueado em:</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

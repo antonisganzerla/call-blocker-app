@@ -1,42 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorBackground"
-        tools:context=".view.CallLogFragment">
+        tools:context=".view.ContactFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_call_log"
-            android:scrollbars="vertical"
+            android:id="@+id/recycler_view_contact"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:scrollbars="vertical"
             android:visibility="visible"
-            tools:listitem="@layout/call_log_card_view"/>
+            tools:listitem="@layout/contact_card_view" />
 
     <LinearLayout
             android:id="@+id/panel_empty_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
         <TextView
+                style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="?actionBarSize"
                 android:gravity="top|center"
-                style="@style/TextAppearance.AppCompat.Medium"
-                android:text="@string/call_log_list_empty" />
+                android:text="@string/contact_list_empty" />
 
         <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="?actionBarSize"
-                android:src="@drawable/ic_phone_cancel_grey600_48dp"
-                />
+                android:src="@drawable/ic_phone_cancel_grey600_48dp" />
     </LinearLayout>
 
 </FrameLayout>

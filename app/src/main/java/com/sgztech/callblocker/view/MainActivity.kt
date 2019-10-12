@@ -2,7 +2,6 @@ package com.sgztech.callblocker.view
 
 import android.os.Bundle
 import android.os.PersistableBundle
-import android.util.Log
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -14,7 +13,6 @@ import com.sgztech.callblocker.util.GoogleSignInUtil.signOut
 import com.sgztech.callblocker.util.PermissionUtil.checkResultPermission
 import com.sgztech.callblocker.util.PermissionUtil.havePermissions
 import com.squareup.picasso.Picasso
-import com.wickerlabs.logmanager.LogsManager
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header.view.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -83,11 +81,14 @@ class MainActivity : BaseActivity() {
                 R.id.nav_item_call -> {
                     openCallLogFragment()
                 }
+                R.id.nav_item_contact -> {
+                    displayView(POSITION_CONTACT_FRAGMENT, getString(R.string.title_contact_list_fragment))
+                }
                 R.id.nav_item_block -> {
-                    displayView(1, getString(R.string.title_block_list_fragment))
+                    displayView(POSITION_BLOCK_LIST_FRAGMENT, getString(R.string.title_block_list_fragment))
                 }
                 R.id.nav_item_tools -> {
-                    displayView(2, getString(R.string.title_preferences_fragment))
+                    displayView(POSITION_PREFERENCES_FRAGMENT, getString(R.string.title_preferences_fragment))
                 }
                 R.id.nav_item_logout -> {
                     showDialogLogout()
@@ -106,7 +107,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun openCallLogFragment() {
-        displayView(INIT_POSITION_FRAGMENT, getString(R.string.title_call_log_fragment))
+        displayView(POSITION_CALL_LOG_FRAGMENT, getString(R.string.title_call_log_fragment))
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -126,9 +127,10 @@ class MainActivity : BaseActivity() {
         if (havePermissions(this)) {
             if (position != fragmentPosition) {
                 val fragment = when (position) {
-                    0 -> CallLogFragment()
-                    1 -> BlockListFragment()
-                    2 -> PreferencesFragment()
+                    POSITION_CALL_LOG_FRAGMENT -> CallLogFragment()
+                    POSITION_BLOCK_LIST_FRAGMENT -> BlockListFragment()
+                    POSITION_PREFERENCES_FRAGMENT -> PreferencesFragment()
+                    POSITION_CONTACT_FRAGMENT -> ContactFragment()
                     else -> {
                         CallLogFragment()
                     }
@@ -171,25 +173,15 @@ class MainActivity : BaseActivity() {
         dialog.show()
     }
 
-//    private fun getContacts() {
-//        val buildList = ContactsGetterBuilder(applicationContext)
-//            .allFields()
-//            .buildList()
-//
-//        buildList.forEach {
-//            Log.w("SAIDA", it.compositeName)
-//            it.phoneList.forEach { phoneNumber ->
-//                Log.w("SAIDA", phoneNumber.mainData)
-//            }
-//        }
-//    }
-
     override val TAG_DEBUG: String
-        get() = MainActivity.javaClass.name
+        get() = MainActivity::javaClass.name
 
     companion object {
         const val PERMISSION_REQUEST_PHONE_CALL = 1
-        const val INIT_POSITION_FRAGMENT = 0
-        const val CURRENT_FRAGMENT_KEY = "CURRENT_FRAGMENT_KEY"
+        private const val CURRENT_FRAGMENT_KEY = "CURRENT_FRAGMENT_KEY"
+        private const val POSITION_CALL_LOG_FRAGMENT = 0
+        private const val POSITION_BLOCK_LIST_FRAGMENT = 1
+        private const val POSITION_PREFERENCES_FRAGMENT = 2
+        private const val POSITION_CONTACT_FRAGMENT = 3
     }
 }

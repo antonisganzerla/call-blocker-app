@@ -4,6 +4,9 @@
         <item android:id="@+id/nav_item_call"
               android:icon="@android:drawable/ic_menu_call"
               android:title="@string/menu_item_call"/>
+        <item android:id="@+id/nav_item_contact"
+              android:icon="@android:drawable/ic_menu_my_calendar"
+              android:title="@string/menu_item_contact"/>
         <item android:id="@+id/nav_item_block"
               android:icon="@android:drawable/ic_lock_lock"
               android:title="@string/menu_item_blockeds"/>
